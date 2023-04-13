@@ -58,9 +58,10 @@ RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh  \ 
-           && -n -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}  \
-		   && --net JMETER_NET --ip 172.18.0.110  
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/report2.log -e -o ${JMETER_HOME}/bin/reports  \
+   		   && cd ${JMETER_HOME}/bin/reports/  \
+    	   && zip -r API_PERF_Results.zip .
+	#	   && --net JMETER_NET --ip 172.18.0.110  
 	#	   && -Jclient.rmi.localport=7000  
 	#	   && -R 172.18.0.101
 	#	   && -l ${JMETER_HOME}/bin/reports/report1.log  \
