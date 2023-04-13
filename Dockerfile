@@ -58,7 +58,7 @@ RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X  -Jclient.rmi.localport=7000 -R 172.18.0.101 -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports  \
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X  -Jclient.rmi.localport=7000 -R 192.168.2.11,192.168.2.12,192.168.2.13 -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports  \
    		   && cd ${JMETER_HOME}/bin/reports/  \
     	   && zip -r ${SCRIPT_NAME}_results.zip .  		   
 		   
