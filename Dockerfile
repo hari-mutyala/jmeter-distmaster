@@ -60,7 +60,7 @@ RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
 ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh  \ 
            && -n -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}  \
-		   && --net JMETER_NET --ip 172.18.0.100  \
+		   && --net JMETER_NET --ip 172.18.0.110  \
 		   && -Jclient.rmi.localport=7000  
 	#	   && -R 172.18.0.101
 	#	   && -l ${JMETER_HOME}/bin/reports/report1.log  \
