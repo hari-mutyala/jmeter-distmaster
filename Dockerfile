@@ -1,4 +1,3 @@
-
 FROM alpine:3.6
 
 LABEL AUTHOR="Hari Mutyala"
@@ -10,7 +9,7 @@ ENV	JMETER_BIN	${JMETER_HOME}/bin
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JMETER_PLUGINS_DOWNLOAD_URL http://repo1.maven.org/maven2/kg/apc
 ENV JMETER_PLUGINS_FOLDER ${JMETER_HOME}/lib/ext
-ENV SCRIPT_NAME Distri_Test1.jmx
+#ENV SCRIPT_NAME Distri_Test1.jmx
 
 EXPOSE 1099 60000 7000
 
@@ -23,7 +22,6 @@ RUN    apk update \
 	&& apk add ca-certificates \
 	&& update-ca-certificates \
 	&& apk add --update openjdk8-jre tzdata curl unzip bash \
-##	&& apk add --update openjdk11-jre tzdata curl unzip bash \
 	&& apk add --no-cache nss \
 	&& rm -rf /var/cache/apk/* \
 	&& mkdir -p /tmp/dependencies  \
@@ -38,29 +36,28 @@ RUN    apk update \
 	&& chmod 777 ${JMETER_HOME}/bin/reports  \
 	&& echo "server.rmi.ssl.disable=true" >> ${JMETER_HOME}/bin/jmeter.properties
 
-#RUN curl -L --silent ${JMETER_PLUGINS_DOWNLOAD_URL}/jmeter-plugins-dummy/0.4/jmeter-plugins-dummy-0.4.jar -o ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-dummy-0.4.jar
-#RUN curl -L --silent ${JMETER_PLUGINS_DOWNLOAD_URL}/jmeter-plugins-cmn-jmeter/0.7/jmeter-plugins-cmn-jmeter-0.7.jar -o ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-cmn-jmeter-0.7.jar
+RUN curl -L --silent ${JMETER_PLUGINS_DOWNLOAD_URL}/jmeter-plugins-dummy/0.4/jmeter-plugins-dummy-0.4.jar -o ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-dummy-0.4.jar
+RUN curl -L --silent ${JMETER_PLUGINS_DOWNLOAD_URL}/jmeter-plugins-cmn-jmeter/0.7/jmeter-plugins-cmn-jmeter-0.7.jar -o ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-cmn-jmeter-0.7.jar
 
-# Set global PATH such that "jmeter" command is found
 ENV PATH $PATH:$JMETER_BIN
-
-#COPY launch.sh /
 
 WORKDIR ${JMETER_HOME}
 
-COPY ${SCRIPT_NAME} ${JMETER_HOME}/bin/examples/
+#COPY ${SCRIPT_NAME} ${JMETER_HOME}/bin/examples/
 
-RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
+#RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
-#COPY launch.sh /
-
-#ENTRYPOINT ["/launch.sh"]
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X  -Jclient.rmi.localport=7000 -R 192.168.2.11,192.168.2.12,192.168.2.13 -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports  \
-   		   && cd ${JMETER_HOME}/bin/reports/  \
-    	   && zip -r ${SCRIPT_NAME}_results.zip .  		   
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh    		   
+    	   
+
+
+
+#ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X  -Jclient.rmi.localport=7000 -R 192.168.2.11,192.168.2.12,192.168.2.13 -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports  \
+#  		   && cd ${JMETER_HOME}/bin/reports/  \
+#    	   && zip -r ${SCRIPT_NAME}_results.zip .  		   
 		   
 	#	   && --net JMETER_NET --ip 172.18.0.105  \
 	#	   && -R 172.18.0.101
@@ -68,10 +65,3 @@ ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X  -Jclient.rmi.localport=7000 -R
 	#	   && -e -o ${JMETER_HOME}/bin/reports  \
 	#	   && cd ${JMETER_HOME}/bin/reports/  \
 	#	   && zip -r ${SCRIPT_NAME}_Results.zip .
-#-n -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -R 10.0.2.2,10.0.2.3 -l ${JMETER_HOME}/bin/reports/report1.log -e -o ${JMETER_HOME}/bin/reports  \
-#    	&& cd ${JMETER_HOME}/bin/reports/  \
-#    	&& zip -r API_PERF_Results.zip .
-
-# ENTRYPOINT    sh ${JMETER_HOME}/bin/jmeter.sh -n -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/report2.log -e -o ${JMETER_HOME}/bin/reports  \
-#     && cd ${JMETER_HOME}/bin/reports/  \
-#     && zip -r API_PERF_Results.zip .
