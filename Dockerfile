@@ -50,7 +50,7 @@ WORKDIR ${JMETER_HOME}
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh    		   
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -t ${jmeter_home}/bin/examples/${SCRIPT_NAME}   		   
     	   
 
 
