@@ -50,7 +50,7 @@ RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X -R 192.168.2.11,192.168.2.12,192.168.2.13 -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}  	 	   
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}  	 	   
     	   
 
 
