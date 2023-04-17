@@ -9,7 +9,7 @@ ENV	JMETER_BIN	${JMETER_HOME}/bin
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JMETER_PLUGINS_DOWNLOAD_URL http://repo1.maven.org/maven2/kg/apc
 ENV JMETER_PLUGINS_FOLDER ${JMETER_HOME}/lib/ext
-#ENV SCRIPT_NAME Distri_Test1.jmx
+ENV SCRIPT_NAME Distri_Test1.jmx
 
 EXPOSE 1099 60000 7000
 
@@ -43,14 +43,14 @@ ENV PATH $PATH:$JMETER_BIN
 
 WORKDIR ${JMETER_HOME}
 
-#COPY ${SCRIPT_NAME} ${JMETER_HOME}/bin/examples/
+COPY ${SCRIPT_NAME} ${JMETER_HOME}/bin/examples/
 
-#RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
+RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh   	 	   
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -t ${jmeter_home}/bin/examples/${SCRIPT_NAME}  	 	   
     	   
 
 
