@@ -18,6 +18,7 @@ volumes:
 services:
   slave1:
     image: hmutyala/jmeter-distslave
+    restart: "no"
     networks:
       jmeter-net:
         ipv4_address: ${jmeterip_slave1}
@@ -30,6 +31,7 @@ services:
 
   slave2:
     image: hmutyala/jmeter-distslave
+    restart: "no"
     networks:
       jmeter-net:
         ipv4_address: ${jmeterip_slave2}
@@ -40,6 +42,7 @@ services:
   
   slave3:
     image: hmutyala/jmeter-distslave
+    restart: "no"
     networks:
       jmeter-net:
         ipv4_address: ${jmeterip_slave3}
