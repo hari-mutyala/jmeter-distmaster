@@ -43,14 +43,15 @@ ENV PATH $PATH:$JMETER_BIN
 
 WORKDIR ${JMETER_HOME}
 
-COPY ${SCRIPT_NAME} ${JMETER_HOME}/bin/examples/
+#COPY ${SCRIPT_NAME} ${JMETER_HOME}/bin/examples/
 
-RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
+#RUN  chmod +x ${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
 
 
 #ENTRYPOINT ["/entrypoint.sh"]
 
-ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports 	 	   
+#ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports 	 	   
+ENTRYPOINT sh ${JMETER_HOME}/bin/jmeter.sh -n -X -l ${JMETER_HOME}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports
     	   
 
 
