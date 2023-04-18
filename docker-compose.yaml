@@ -5,64 +5,67 @@ networks:
   driver: bridge
   ipam:
     config:
-      - subnet: ${jmeter_subnet}
+      - subnet: ${JMETER_SUBNET}
 volumes:
   jmeter-vol:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/opt/jmeter-vol'
+     # device: '/opt/jmeter-vol'
 
 
 services:
   slave1:
     image: hmutyala/jmeter-distslave
+    container_name: jmeter-slave1
     restart: "no"
     networks:
       jmeter-net:
-        ipv4_address: ${jmeterip_slave1}
+        ipv4_address: ${JMETERIP_SLAVE1}
     volumes:
       - jmeter-vol:/mnt/jmeter
     command:
-      - -n -Jclient.rmi.localport=${jmeter_clientport} -Jserver.rmi.localport={jmeter_serverport}
-      - -j /mnt/jmeter/slave_${jmeterip_slave1}.logdone
-  
+      - -n -Jclient.rmi.localport=${JMETER_CLIENTPORT} -Jserver.rmi.localport={JMETER_SERVERPORT}
+      - -j /mnt/jmeter/slave_${JMETERIP_SLAVE1}.logdone
 
   slave2:
     image: hmutyala/jmeter-distslave
+    container_name: jmeter-slave2
     restart: "no"
     networks:
       jmeter-net:
-        ipv4_address: ${jmeterip_slave2}
+        ipv4_address: ${JMETERIP_SLAVE2}
     volumes:
      - jmeter-vol:/mnt/jmeter
     command:
-      -n -Jclient.rmi.localport=${jmeter_clientport} -Jserver.rmi.localport={jmeter_serverport}
+      - -n -Jclient.rmi.localport=${JMETER_CLIENTPORT} -Jserver.rmi.localport={JMETER_SERVERPORT}
+      - -j /mnt/jmeter/slave_${JMETERIP_SLAVE2}.logdone
   
   slave3:
     image: hmutyala/jmeter-distslave
+    container_name: jmeter-slave3
     restart: "no"
     networks:
       jmeter-net:
-        ipv4_address: ${jmeterip_slave3}
+        ipv4_address: ${JMETERIP_SLAVE3}
     volumes:
       - jmeter-vol:/mnt/jmeter
     command:
-      -n -Jclient.rmi.localport=${jmeter_clientport} -Jserver.rmi.localport={jmeter_serverport}
+      - -n -Jclient.rmi.localport=${JMETER_CLIENTPORT} -Jserver.rmi.localport={JMETER_SERVERPORT}
+      - -j /mnt/jmeter/slave_${JMETERIP_SLAVE3}.logdone
  
   master:
     image: hmutyala/jmeter-distmaster
+    container_name: jmeter-master
     networks:
       jmeter-net:
-        ipv4_address: ${jmeterip_master}
+        ipv4_address: ${JMETERIP_MASTER}
     volumes:
-      - ./${SCRIPT_NAME}:${JMETER_HOME}/bin/examples/${SCRIPT_NAME}
-     # - jmeter-vol:/mnt/jmeter    
+      - jmeter-vol:/mnt/jmeter
     command:      
-      -Jclient.rmi.localport=7000 -t ${JMETER_HOME}/bin/examples/${SCRIPT_NAME} -R ${jmeterip_slave1},${jmeterip_slave2},${jmeterip_slave3}
-    #   -n -X -Jclient.rmi.localport=7000 -t ${jmeter_home}/bin/examples/${SCRIPT_NAME} -l ${jmeter_home}/bin/reports/${SCRIPT_NAME}_results.jtl -e -o ${JMETER_HOME}/bin/reports && cd ${JMETER_HOME}/bin/reports/ && zip -r ${SCRIPT_NAME}_results.zip . 
+      -Jclient.rmi.localport=7000 -R ${JMETERIP_SLAVE1},${JMETERIP_SLAVE2},${JMETERIP_SLAVE3}    
     depends_on:
-      - slave1
-      - slave2
-      - slave3
+      - jmeter-slave1
+      - jmeter-slave2
+      - jmeter-slave3
